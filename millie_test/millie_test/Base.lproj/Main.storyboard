@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,22 +19,65 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zvu-w8-QUe">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fp1-Ap-by3">
-                                    <size key="itemSize" width="128" height="128"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="20" id="Fp1-Ap-by3">
+                                    <size key="itemSize" width="361" height="350"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MainCollectionCell" id="IEP-gP-0iH" customClass="MainCollectionCell" customModule="millie_test" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                        <rect key="frame" x="16" y="0.0" width="361" height="350"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CB2-gb-gZf">
-                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="361" height="350"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6p8-3F-Dbr">
+                                                    <rect key="frame" x="16" y="16" width="329" height="76.666666666666671"/>
+                                                    <string key="text">세가 '골든 액스' 시리즈, 10부작 애니메이션으로 제작된다세가 '골든 액스' 시리즈, 10부작 애니메이션으로 제작된다세가 '골든 액스' 시리즈, 10부작 애니메이션으로 제작된다세가 '골든 액스' 시리즈, 10부작 애니메이션으로 제작된다세가 '골든 액스' 시리즈, 10부작 애니메이션으로 제작된다</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AI 리포터" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKU-vX-aTe">
+                                                    <rect key="frame" x="16" y="108.66666666666667" width="53" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="2024.04.18 11:34" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2p8-Dw-IOr">
+                                                    <rect key="frame" x="89" y="111.33333333333333" width="82.666666666666686" height="12"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="13J-fA-qmh">
+                                                    <rect key="frame" x="0.0" y="141.66666666666663" width="361" height="208.33333333333337"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="13J-fA-qmh" firstAttribute="leading" secondItem="CB2-gb-gZf" secondAttribute="leading" id="1Yw-Wd-GUe"/>
+                                                <constraint firstAttribute="trailing" secondItem="13J-fA-qmh" secondAttribute="trailing" id="8ko-yY-LlB"/>
+                                                <constraint firstItem="6p8-3F-Dbr" firstAttribute="top" secondItem="CB2-gb-gZf" secondAttribute="top" constant="16" id="BAm-Ex-X5H"/>
+                                                <constraint firstItem="2p8-Dw-IOr" firstAttribute="centerY" secondItem="CKU-vX-aTe" secondAttribute="centerY" id="BE6-AM-SdB"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2p8-Dw-IOr" secondAttribute="trailing" constant="16" id="IYK-pZ-v5I"/>
+                                                <constraint firstItem="13J-fA-qmh" firstAttribute="top" secondItem="CKU-vX-aTe" secondAttribute="bottom" constant="16" id="VQI-df-Rz2"/>
+                                                <constraint firstItem="CKU-vX-aTe" firstAttribute="top" secondItem="6p8-3F-Dbr" secondAttribute="bottom" constant="16" id="boz-2Y-RjU"/>
+                                                <constraint firstItem="6p8-3F-Dbr" firstAttribute="leading" secondItem="CB2-gb-gZf" secondAttribute="leading" constant="16" id="c0N-BB-Dys"/>
+                                                <constraint firstAttribute="trailing" secondItem="6p8-3F-Dbr" secondAttribute="trailing" constant="16" id="jfr-C3-XAI"/>
+                                                <constraint firstItem="2p8-Dw-IOr" firstAttribute="leading" secondItem="CKU-vX-aTe" secondAttribute="trailing" constant="20" id="kvA-X4-0pH"/>
+                                                <constraint firstAttribute="bottom" secondItem="13J-fA-qmh" secondAttribute="bottom" id="o7O-Aw-eRc"/>
+                                                <constraint firstItem="CKU-vX-aTe" firstAttribute="leading" secondItem="CB2-gb-gZf" secondAttribute="leading" constant="16" id="qbI-bT-KLC"/>
+                                            </constraints>
                                         </collectionViewCellContentView>
-                                        <color key="backgroundColor" systemColor="linkColor"/>
+                                        <connections>
+                                            <outlet property="authorLabel" destination="CKU-vX-aTe" id="eVU-0D-Zfg"/>
+                                            <outlet property="dateLabel" destination="2p8-Dw-IOr" id="UCs-KM-pIW"/>
+                                            <outlet property="imageView" destination="13J-fA-qmh" id="EcB-mt-txK"/>
+                                            <outlet property="titleLabel" destination="6p8-3F-Dbr" id="k2k-Sp-jIK"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -44,7 +86,7 @@
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Zvu-w8-QUe" secondAttribute="bottom" id="fFs-Np-Ezt"/>
                             <constraint firstItem="Zvu-w8-QUe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qJQ-tm-gcJ"/>
@@ -61,12 +103,4 @@
             <point key="canvasLocation" x="112" y="-7"/>
         </scene>
     </scenes>
-    <resources>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>

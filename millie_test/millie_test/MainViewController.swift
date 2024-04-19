@@ -29,7 +29,7 @@ class MainViewController: UIViewController, StoryboardView {
     
     lazy var refresh: UIRefreshControl = {
         let refresh = UIRefreshControl()
-        refresh.tintColor = .red
+        refresh.tintColor = .lightGray
         
         return refresh
     }()
@@ -67,6 +67,7 @@ class MainViewController: UIViewController, StoryboardView {
         
         // load data
         reactor.pulse(\.$apiModel)
+            .skip(1)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { onwer, model in
                 onwer.applySnapShot(apiModel: model)
@@ -82,6 +83,7 @@ class MainViewController: UIViewController, StoryboardView {
         
         // error
         reactor.pulse(\.$error)
+            .skip(1)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { onwer, error in
                 onwer.applySnapShot(apiModel: nil)
@@ -95,10 +97,11 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     
     private func makeDataSource() -> DataSource {
         
-        let dataSource = DataSource(collectionView: self.collectionView) { collectionView, indexPath, car in
+        let dataSource = DataSource(collectionView: self.collectionView) { collectionView, indexPath, article in
             
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionCell.identifier, for: indexPath) as? MainCollectionCell {
                 
+                cell.articleModel = article
                 return cell
             }
             
@@ -113,12 +116,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         var articles: [ArticleModel] = []
         if let arts = apiModel?.articles {
             // 데이터가 있는 경우 저장
-            CoreDataManager.shared.setData(articles: arts)
+            CoreDataManager.shared.saveData(articles: arts)
             articles = arts
         } else {
             // 데이터가 없는 경우 로컬데이터 사용
             articles = CoreDataManager.shared.getData()
         }
+        
+        print(articles.first)
         
         var snapShot = Snapshot()
         snapShot.appendSections([.main])
@@ -133,9 +138,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if UIDevice.current.orientation.isLandscape {
-            return CGSize(width: (collectionView.bounds.width - 20) / 3, height: 250)
+            return CGSize(width: (collectionView.bounds.width - 40 - 32) / 3, height: 250)
         } else {
-            return CGSize(width: collectionView.bounds.width, height: 350)
+            return CGSize(width: collectionView.bounds.width - 32, height: 350)
         }
     }
 }

@@ -1,19 +1,14 @@
 //
-//  APIModel.swift
+//  ArticleModel.swift
 //  millie_test
 //
-//  Created by Hyeonjoon Kim_M1 on 2024/04/18.
+//  Created by Hyeonjoon Kim_M1 on 2024/04/19.
 //
 
 import Foundation
 
-struct ApiModel: Codable {
-    let status: String?
-    let totalResults: Int?
-    let articles: [ArticleModel]?
-}
-
 struct ArticleModel: Codable, Hashable {
+    
     let source: SourceModel?
     let author: String?
     let title: String?
@@ -39,15 +34,21 @@ extension ArticleModel {
         let jsonData = try! JSONEncoder().encode(self)
         return String(data: jsonData, encoding: .utf8)!
     }
-}
-
-extension String {
-    func toArticleModel() -> ArticleModel? {
-        return try? JSONDecoder().decode(ArticleModel.self, from: self.data(using: .utf8)!)
+    
+    func date() -> String? {
+        
+        if let publishedAt {
+            let dateFormatter = DateFormatter()
+            let tempLocale = dateFormatter.locale
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            let date = dateFormatter.date(from: publishedAt)
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+            dateFormatter.locale = tempLocale
+            let dateString = dateFormatter.string(from: date ?? Date())
+            return dateString
+        } else {
+            return nil
+        }
     }
-}
-
-struct SourceModel: Codable {
-    let id: String?
-    let name: String?
 }
