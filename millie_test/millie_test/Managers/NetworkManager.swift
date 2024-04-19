@@ -18,6 +18,10 @@ class NetworkManager {
     
     func request<T: Decodable>() -> Observable<T> {
         
+        guard NetworkMonitorManager.shared.isConnected else {
+            return .empty()
+        }
+        
         let url = "https://newsapi.org/v2/top-headlines?country=kr&apiKey=\(appKey)"
         
         var request = URLRequest(url: URL(string: url)!)
@@ -29,7 +33,12 @@ class NetworkManager {
             }
     }
     
-    func requestImage(url: URL, completed: @escaping ((UIImage?) -> Void)) {
+    func downloadImage(url: URL, completed: @escaping ((UIImage?) -> Void)) {
+        
+        guard NetworkMonitorManager.shared.isConnected else {
+            completed(nil)
+            return
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

@@ -10,6 +10,8 @@ import UIKit
 import ReactorKit
 import RxSwift
 
+var isForceUpdate: Bool = false
+
 class MainViewController: UIViewController, StoryboardView {
     
     typealias Reactor = MainViewReactor
@@ -46,7 +48,7 @@ class MainViewController: UIViewController, StoryboardView {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        collectionView.reloadData()
+        collectionViewForceUpdate()
     }
     
     func bind(reactor: MainViewReactor) {
@@ -61,6 +63,13 @@ class MainViewController: UIViewController, StoryboardView {
             .map({ _ in .initialize })
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+        
+        // cell select
+        collectionView.rx.itemSelected
+            .map { .itemSelected($0.item) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
     }
     
     func bindState(reactor: MainViewReactor) {
@@ -89,6 +98,37 @@ class MainViewController: UIViewController, StoryboardView {
                 onwer.applySnapShot(apiModel: nil)
             })
             .disposed(by: disposeBag)
+        
+        // item select
+        reactor.state.map { $0.selectedItem }
+            .observe(on: MainScheduler.instance)
+            .filter({ $0 != nil })
+            .subscribe(with: self, onNext: { onwer, model in
+                onwer.moveWebViewController(model: model)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - ViewController Method
+extension MainViewController {
+    
+    func collectionViewForceUpdate() {
+        isForceUpdate = true
+        applySnapShot(apiModel: nil)
+    }
+    
+    func moveWebViewController(model: ArticleModel?) {
+        
+        guard let model else {
+            return
+        }
+        
+        if let webVC = storyboard?.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController {
+            webVC.model = model
+            navigationController?.pushViewController(webVC, animated: true)
+            collectionViewForceUpdate()
+        }
     }
 }
 
@@ -97,11 +137,13 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     
     private func makeDataSource() -> DataSource {
         
-        let dataSource = DataSource(collectionView: self.collectionView) { collectionView, indexPath, article in
+        let dataSource = DataSource(collectionView: self.collectionView) { [weak self] collectionView, indexPath, article in
             
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionCell.identifier, for: indexPath) as? MainCollectionCell {
                 
                 cell.articleModel = article
+                cell.titleLabel.textColor = self?.reactor?.selectedIndex.contains(indexPath.item) ?? false ? .red : .black
+                
                 return cell
             }
             
@@ -131,7 +173,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.dataSource.apply(snapShot)
+            self.dataSource.apply(snapShot) {
+                isForceUpdate = false
+            }
         }
     }
     

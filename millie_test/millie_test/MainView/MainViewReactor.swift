@@ -13,12 +13,29 @@ import RxSwift
 class MainViewReactor: Reactor {
     
     let initialState: State = State()
+    
+    var selectedIndex: [Int] = []
 
     func mutate(action: Action) -> Observable<Mutation> {
         
         switch action {
         case .initialize:
             return .merge(.just(.setLoading(true)), loadData())
+        case .itemSelected(let index):
+            guard let model = currentState.apiModel?.articles?[safe: index] else {
+                return .empty()
+            }
+            
+            if selectedIndex.contains(index) == false {
+                selectedIndex.append(index)
+            }
+            
+            return Observable.concat([
+                 Observable.just(Mutation.itemSelected(model)),
+                 Observable.just(Mutation.itemSelected(nil))
+             ])
+            
+//            return .just(.itemSelected(model))
         }
     }
     
@@ -35,6 +52,8 @@ class MainViewReactor: Reactor {
         case .isError(let error):
             newState.error = error
             newState.isLoading = false
+        case .itemSelected(let model):
+            newState.selectedItem = model
         }
         
         return newState
@@ -47,18 +66,24 @@ extension MainViewReactor {
     
     enum Action {
         case initialize
+        
+        case itemSelected(Int)
     }
     
     enum Mutation {
         case updateData(ApiModel)
         case setLoading(Bool)
         case isError(Error)
+        
+        case itemSelected(ArticleModel?)
     }
     
     struct State {
         @Pulse var apiModel: ApiModel?
         var isLoading: Bool = false
         @Pulse var error: Error?
+        
+        var selectedItem: ArticleModel?
     }
 }
 

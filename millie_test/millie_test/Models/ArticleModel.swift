@@ -24,6 +24,12 @@ struct ArticleModel: Codable, Hashable {
     }
     
     static func == (lhs: ArticleModel, rhs: ArticleModel) -> Bool {
+        
+        // 강제 업데이트가 필요 한 경우
+        if isForceUpdate {
+            return false
+        }
+        
         return lhs.title == rhs.title && lhs.publishedAt == rhs.publishedAt
     }
 }

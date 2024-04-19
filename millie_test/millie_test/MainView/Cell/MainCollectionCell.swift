@@ -25,27 +25,28 @@ class MainCollectionCell: UICollectionViewCell {
      
     override class func awakeFromNib() {
         super.awakeFromNib()
-
     }
     
-    private func updateUi() {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.image = nil
         
         layer.cornerRadius = 5
         layer.borderWidth = 1
         layer.borderColor = UIColor(220, 220, 220).cgColor
+    }
+    
+    private func updateUi() {
         
         guard let articleModel else {
             return
         }
         
-        authorLabel.text = articleModel.author ?? "정보 없음"
+        authorLabel.text = articleModel.author
         dateLabel.text = articleModel.date()
         titleLabel.text = articleModel.title
         
-        if let url = articleModel.urlToImage {
-            ImageFileManager.shared.getImage(urlString: url) { [weak self] image in
-                self?.imageView.image = image
-            }
-        }
+        imageView.cacheImage(urlString: articleModel.urlToImage)
     }
 }
