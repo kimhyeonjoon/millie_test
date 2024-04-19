@@ -18,9 +18,10 @@ extension UIImageView {
     
     func cacheImage(urlString: String?) {
         
+        self.image = nil
+        
         // url 에러인 경우 nil
         guard let urlString, let url = URL(string: urlString) else {
-            self.image = nil
             return
         }
         
@@ -30,10 +31,6 @@ extension UIImageView {
         } else {
             // api 호출
             NetworkManager.shared.downloadImage(url: url) { [weak self] image in
-                if let image {
-                    // 이미지 CoreData 저장
-                    CoreDataManager.shared.saveImage(url: urlString, image: image)
-                }
                 // api에서 가져온 이미지 적용
                 self?.image = image
             }
@@ -55,5 +52,14 @@ extension UIColor {
 extension Array {
     subscript (safe index: Int) -> Element? {
         return indices ~= index ? self[index] : nil
+    }
+}
+
+extension CALayer {
+    func customLayer(cornerRadius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
+        
+        self.cornerRadius = cornerRadius
+        self.borderWidth = borderWidth
+        self.borderColor = borderColor.cgColor
     }
 }

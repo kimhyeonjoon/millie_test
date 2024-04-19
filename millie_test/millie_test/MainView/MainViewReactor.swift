@@ -34,8 +34,6 @@ class MainViewReactor: Reactor {
                  Observable.just(Mutation.itemSelected(model)),
                  Observable.just(Mutation.itemSelected(nil))
              ])
-            
-//            return .just(.itemSelected(model))
         }
     }
     

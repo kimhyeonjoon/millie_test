@@ -23,18 +23,11 @@ class MainCollectionCell: UICollectionViewCell {
         }
     }
      
-    override class func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         
         imageView.image = nil
-        
-        layer.cornerRadius = 5
-        layer.borderWidth = 1
-        layer.borderColor = UIColor(220, 220, 220).cgColor
+        layer.customLayer(cornerRadius: 5, borderWidth: 1, borderColor: UIColor(220, 220, 220))
     }
     
     private func updateUi() {
@@ -48,5 +41,9 @@ class MainCollectionCell: UICollectionViewCell {
         titleLabel.text = articleModel.title
         
         imageView.cacheImage(urlString: articleModel.urlToImage)
+    }
+    
+    func cancelImage() {
+        NetworkManager.shared.cancelSession(urlString: articleModel?.urlToImage ?? "")
     }
 }

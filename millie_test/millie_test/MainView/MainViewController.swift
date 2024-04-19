@@ -32,7 +32,6 @@ class MainViewController: UIViewController, StoryboardView {
     lazy var refresh: UIRefreshControl = {
         let refresh = UIRefreshControl()
         refresh.tintColor = .lightGray
-        
         return refresh
     }()
     
@@ -43,6 +42,19 @@ class MainViewController: UIViewController, StoryboardView {
         self.reactor?.action.onNext(.initialize)
         
         collectionView.refreshControl = refresh
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionViewForceUpdate()
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -124,6 +136,8 @@ extension MainViewController {
             return
         }
         
+        print("select = \(model)")
+        
         if let webVC = storyboard?.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController {
             webVC.model = model
             navigationController?.pushViewController(webVC, animated: true)
@@ -165,8 +179,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             articles = CoreDataManager.shared.getData()
         }
         
-        print(articles.first)
-        
         var snapShot = Snapshot()
         snapShot.appendSections([.main])
         snapShot.appendItems(articles, toSection: .main)
@@ -182,9 +194,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if UIDevice.current.orientation.isLandscape {
+            // 40: cell 간 간격(10x2), 32:양 쪽 여백(16x2)
             return CGSize(width: (collectionView.bounds.width - 40 - 32) / 3, height: 250)
         } else {
             return CGSize(width: collectionView.bounds.width - 32, height: 350)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? MainCollectionCell {
+            cell.cancelImage()
         }
     }
 }

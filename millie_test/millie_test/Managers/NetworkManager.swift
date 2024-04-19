@@ -16,6 +16,8 @@ class NetworkManager {
     
     static let shared = NetworkManager()
     
+    private var sessions: [String : URLSession] = [:]
+    
     func request<T: Decodable>() -> Observable<T> {
         
         guard NetworkMonitorManager.shared.isConnected else {
@@ -43,11 +45,13 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        let session: URLSession = URLSession(configuration: .ephemeral)
+        session.dataTask(with: request) { data, response, error in
             
             DispatchQueue.main.async {
                 
                 if let data = data, let image = UIImage(data: data) {
+                    CoreDataManager.shared.saveImage(url: url.absoluteString, image: image)
                     completed(image)
                 } else {
                     completed(nil)
@@ -55,5 +59,19 @@ class NetworkManager {
             }
             
         }.resume()
+        
+        sessions.updateValue(session, forKey: url.absoluteString)
+    }
+    
+    func cancelSession(urlString: String) {
+        if let session = sessions[urlString] {
+            session.invalidateAndCancel()
+        }
+    }
+    
+    func cancelAllSession() {
+        sessions.forEach { _, session in
+            session.invalidateAndCancel()
+        }
     }
 }
